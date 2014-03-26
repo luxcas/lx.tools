@@ -1,0 +1,133 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+    xmlns:tal="http://xml.zope.org/namespaces/tal"
+    xmlns:metal="http://xml.zope.org/namespaces/metal"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    lang="en"
+    metal:use-macro="here/main_template/macros/master"
+    i18n:domain="plone">
+    <head>
+        <metal:block fill-slot="top_slot"
+            tal:define="dummy python:request.set('disable_border',1);
+                        disable_column_one python:request.set('disable_plone.leftcolumn',1);
+                        disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+    </head>
+    <body>
+        <div metal:fill-slot="main"
+            tal:define="settings view/settings">
+            <a href=""
+               id="setup-link"
+               tal:attributes="href string:$portal_url/plone_control_panel"
+               i18n:translate="">
+                Configuração do Site
+            </a> &rsaquo;
+            <a href=""
+               id="setup-link"
+               tal:attributes="href string:$portal_url/@@lxtools"
+               i18n:translate="">
+                LX Tools
+            </a>
+            <div metal:use-macro="context/global_statusmessage/macros/portal_message">
+                Portal status message
+            </div>
+            <script type="text/javascript">
+                function toggleDiv(divId) {
+                    $("#"+divId).toggle();
+                }
+            </script>
+            <form method="post"
+                tal:attributes="action string:${context/absolute_url}/@@lxtools"
+                tal:define="errors view/errors">
+                <h1 style="font-size: 1.5em; font-weight: bold;">Lx Tools</h1>
+                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                    <legend>Reindex</legend>
+                    <p>
+                        <a href="javascript:toggleDiv('reindexIndexObject');">Recatalogar indice no objeto</a>
+                    </p>
+                    <div id="reindexIndexObject" style="display: none;">
+                        <div tal:define="error errors/tipo_conteudo | nothing;"
+                            tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="tipo_conteudo">Tipo de Conteúdo</label>
+                            <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
+                            <div class="formHelp">
+                                Selecione o tipo de conteúdo.
+                            </div>
+                            <div tal:condition="error" tal:content="error" />
+                            <div style="float:left; margin-right: 2em;"
+                                tal:define="allTypes view/getTypes;
+                                            typeLists python:here.createMultiColumnList(allTypes, numCols=4, sort_on='self');"
+                                tal:repeat="sublist typeLists">
+                                <tal:items repeat="type sublist">
+                                    <input type="checkbox"
+                                       name="tipo.conteudo:list"
+                                       value="#"
+                                       class="noborder"
+                                       tal:attributes="value type;"/>
+                                    <label tal:content="type"/>
+                                    <br />
+                                </tal:items>
+                            </div>
+                        </div>
+                        <div tal:define="error errors/index_conteudo | nothing;"
+                            tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="index_conteudo">Index</label>
+                            <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
+                            <div class="formHelp">
+                                Selecione o Index
+                            </div>
+                            <div tal:condition="error" tal:content="error" />
+                            <div style="float:left; margin-right: 2em;"
+                                tal:define="allIndexes view/getIndexes;
+                                            indexesLists python:here.createMultiColumnList(allIndexes, numCols=4, sort_on='self');"
+                                tal:repeat="sublist indexesLists">
+                                <tal:items repeat="index sublist">
+                                    <input type="checkbox"
+                                       name="index.conteudo:list"
+                                       value="#"
+                                       class="noborder"
+                                       tal:attributes="value index;"/>
+                                    <label tal:content="index"/>
+                                    <br />
+                                </tal:items>
+                            </div>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <input type="submit" name="form.action.reindexIndexObject" value="Reindex" />
+                    </div>
+                </fieldset>
+                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                    <legend>Setting 03</legend>
+                    <p>
+                        <a href="javascript:toggleDiv('Setting03');">Setting 03</a>
+                    </p>
+                    <div id="Setting03" style="display: none;">
+                        <div class="formHelp">
+                            Settings 03
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                    <legend>Setting 04</legend>
+                    <p>
+                        <a href="javascript:toggleDiv('Setting04');">Setting 04</a>
+                    </p>
+                    <div id="Setting04" style="display: none;">
+                        <div class="formHelp">
+                            Settings 04
+                        </div>
+                    </div>
+                </fieldset>
+                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                    <legend>Setting 05</legend>
+                    <p>
+                        <a href="javascript:toggleDiv('Setting05');">Setting 05</a>
+                    </p>
+                    <div id="Setting05" style="display: none;">
+                        <div class="formHelp">
+                            Settings 05
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </body>
+</html>
