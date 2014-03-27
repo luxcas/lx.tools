@@ -20,5 +20,5 @@
         class=".lxtools.LxToolsView"
         permission="cmf.ManagePortal"
     />
-
+ 
 </configure>
