@@ -28,4 +28,6 @@
         provides="Products.GenericSetup.interfaces.EXTENSION"
     />
 
+    <i18n:registerTranslations directory="locales" />
+    
 </configure>

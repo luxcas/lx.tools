@@ -4,7 +4,7 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n"
     lang="en"
     metal:use-macro="here/main_template/macros/master"
-    i18n:domain="plone">
+    i18n:domain="lx.tools">
     <head>
         <metal:block fill-slot="top_slot"
             tal:define="dummy python:request.set('disable_border',1);
@@ -17,8 +17,8 @@
             <a href=""
                id="setup-link"
                tal:attributes="href string:$portal_url/plone_control_panel"
-               i18n:translate="">
-                Configuração do Site
+               i18n:translate="Site Setup">
+                Site Setup
             </a> &rsaquo;
             <a href=""
                id="setup-link"
@@ -39,16 +39,16 @@
                 tal:define="errors view/errors">
                 <h1 style="font-size: 1.5em; font-weight: bold;">Lx Tools</h1>
                 <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
-                    <legend>Reindex</legend>
+                    <legend i18n:translate="">Reindex</legend>
                     <p>
-                        <a href="javascript:toggleDiv('reindexIndexObject');">Recatalogar indice no objeto</a>
+                        <a href="javascript:toggleDiv('reindexIndexObject');" i18n:translate="">Recatalogar indice no objeto</a>
                     </p>
                     <div id="reindexIndexObject" style="display: none;">
                         <div tal:define="error errors/tipo_conteudo | nothing;"
                             tal:attributes="class python:'field error' if error else 'field'">
-                            <label for="tipo_conteudo">Tipo de Conteúdo</label>
+                            <label for="tipo_conteudo" i18n:translate="">Tipo de Conteúdo</label>
                             <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
-                            <div class="formHelp">
+                            <div class="formHelp" i18n:translate="">
                                 Selecione o tipo de conteúdo.
                             </div>
                             <div tal:condition="error" tal:content="error" />
@@ -69,9 +69,9 @@
                         </div>
                         <div tal:define="error errors/index_conteudo | nothing;"
                             tal:attributes="class python:'field error' if error else 'field'">
-                            <label for="index_conteudo">Index</label>
+                            <label for="index_conteudo" i18n:translate="">Index</label>
                             <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
-                            <div class="formHelp">
+                            <div class="formHelp" i18n:translate="">
                                 Selecione o Index
                             </div>
                             <div tal:condition="error" tal:content="error" />
