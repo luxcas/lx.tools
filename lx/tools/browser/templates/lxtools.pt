@@ -10,6 +10,9 @@
             tal:define="dummy python:request.set('disable_border',1);
                         disable_column_one python:request.set('disable_plone.leftcolumn',1);
                         disable_column_two python:request.set('disable_plone.rightcolumn',1);" />
+        <metal:styleslot fill-slot="style_slot">
+            <link tal:attributes="href string:${context/portal_url}/++resource++lx.tools.css/styles.css" media="all" type="text/css" rel="stylesheet">
+        </metal:styleslot>
     </head>
     <body>
         <div metal:fill-slot="main"
@@ -37,8 +40,8 @@
             <form method="post"
                 tal:attributes="action string:${context/absolute_url}/@@lxtools"
                 tal:define="errors view/errors">
-                <h1 style="font-size: 1.5em; font-weight: bold;">Lx Tools</h1>
-                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                <h1>Lx Tools</h1>
+                <fieldset class="teste">
                     <legend i18n:translate="">Reindex</legend>
                     <p>
                         <a href="javascript:toggleDiv('reindexIndexObject');" i18n:translate="">Recatalogar indice no objeto</a>
@@ -52,7 +55,7 @@
                                 Selecione o tipo de conteúdo.
                             </div>
                             <div tal:condition="error" tal:content="error" />
-                            <div style="float:left; margin-right: 2em;"
+                            <div class="column"
                                 tal:define="allTypes view/getTypes;
                                             typeLists python:here.createMultiColumnList(allTypes, numCols=4, sort_on='self');"
                                 tal:repeat="sublist typeLists">
@@ -75,7 +78,7 @@
                                 Selecione o Index
                             </div>
                             <div tal:condition="error" tal:content="error" />
-                            <div style="float:left; margin-right: 2em;"
+                            <div class="column"
                                 tal:define="allIndexes view/getIndexes;
                                             indexesLists python:here.createMultiColumnList(allIndexes, numCols=4, sort_on='self');"
                                 tal:repeat="sublist indexesLists">
@@ -94,7 +97,7 @@
                         <input type="submit" name="form.action.reindexIndexObject" value="Reindex" />
                     </div>
                 </fieldset>
-                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                <!--<fieldset>
                     <legend>Setting 03</legend>
                     <p>
                         <a href="javascript:toggleDiv('Setting03');">Setting 03</a>
@@ -105,7 +108,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                <fieldset>
                     <legend>Setting 04</legend>
                     <p>
                         <a href="javascript:toggleDiv('Setting04');">Setting 04</a>
@@ -116,7 +119,7 @@
                         </div>
                     </div>
                 </fieldset>
-                <fieldset style="border: 0.1em solid #329fd7; margin: 10px; padding: 10px;">
+                <fieldset>
                     <legend>Setting 05</legend>
                     <p>
                         <a href="javascript:toggleDiv('Setting05');">Setting 05</a>
@@ -126,7 +129,7 @@
                             Settings 05
                         </div>
                     </div>
-                </fieldset>
+                </fieldset>-->
             </form>
         </div>
     </body>

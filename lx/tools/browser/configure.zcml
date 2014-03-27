@@ -12,7 +12,13 @@
         directory="imagens"
         permission="zope.Public"
     />
-    
+
+    <browser:resourceDirectory
+        name="lx.tools.css"
+        directory="css"
+        permission="zope.Public"
+    />
+
     <!--Page Settings JE-->
     <browser:page
         for="Products.CMFPlone.interfaces.IPloneSiteRoot"
