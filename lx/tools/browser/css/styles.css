@@ -1,0 +1,9 @@
+.template-lxtools fieldset{
+    border: 0.1em solid #329fd7 !important;
+    margin: 10px;
+    padding: 10px;
+}
+.template-lxtools .column {
+    float:left;
+    margin-right: 2em;
+}
