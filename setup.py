@@ -36,6 +36,7 @@ setup(name='lx.tools',
       include_package_data=True,
       zip_safe=False,
       install_requires=['setuptools',
+						'mediawiki', 
                         # -*- Extra requirements: -*-
                         ],
       tests_require=tests_require,

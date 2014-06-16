@@ -39,9 +39,10 @@
             </script>
             <form method="post"
                 tal:attributes="action string:${context/absolute_url}/@@lxtools"
+                enctype="multipart/form-data"
                 tal:define="errors view/errors">
                 <h1>Lx Tools</h1>
-                <fieldset class="teste">
+                <fieldset>
                     <legend i18n:translate="">Reindex</legend>
                     <p>
                         <a href="javascript:toggleDiv('reindexIndexObject');" i18n:translate="">Recatalogar indice no objeto</a>
@@ -97,18 +98,38 @@
                         <input type="submit" name="form.action.reindexIndexObject" value="Reindex" />
                     </div>
                 </fieldset>
-                <!--<fieldset>
-                    <legend>Setting 03</legend>
+                <fieldset>
+                    <legend>MediaWiki</legend>
                     <p>
-                        <a href="javascript:toggleDiv('Setting03');">Setting 03</a>
+                        <a href="javascript:toggleDiv('parseXML');">Migrar MediaWiki</a>
                     </p>
-                    <div id="Setting03" style="display: none;">
-                        <div class="formHelp">
-                            Settings 03
+                    <div id="parseXML" style="display: none;">
+                        
+                        <div tal:define="error errors/folder_conteudo | nothing;"
+                            tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="folder_conteudo" i18n:translate="">Pasta</label>
+                            <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
+                            <div class="formHelp" i18n:translate="">
+                                Nome da pasta utilizada para a migração.
+                            </div>
+                            <div tal:condition="error" tal:content="error" />
+                            <input type="text" id="folderMediaWiki" name="folderMediaWiki"/>
                         </div>
+                        <div tal:define="error errors/file_xml | nothing;"
+                            tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="file_xml" i18n:translate="">Arquivo XML</label>
+                            <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
+                            <div class="formHelp" i18n:translate="">
+                                Selecione o arquivo XML.
+                            </div>
+                            <div tal:condition="error" tal:content="error" />
+                            <input type="file" id="fileXML" name="fileXML"/>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <input type="submit" name="form.action.parseXML" value="Parse XML" />
                     </div>
                 </fieldset>
-                <fieldset>
+                <!--<fieldset>
                     <legend>Setting 04</legend>
                     <p>
                         <a href="javascript:toggleDiv('Setting04');">Setting 04</a>
