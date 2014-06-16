@@ -97,7 +97,7 @@ class LxToolsView(BrowserView):
         utils = getToolByName(context, 'plone_utils')
         if file_xml.filename == '':
             self.errors['file_xml'] = "O campo é obrigatório."
-        if folder_conteudo == '':
+        if (folder_conteudo == '') or (folder_conteudo.strip() == ''):
             self.errors['folder_conteudo'] = "O campo é obrigatório."
         # Check for errors
         if self.errors:

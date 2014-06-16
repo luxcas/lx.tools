@@ -107,7 +107,7 @@
                         
                         <div tal:define="error errors/folder_conteudo | nothing;"
                             tal:attributes="class python:'field error' if error else 'field'">
-                            <label for="folder_conteudo" i18n:translate="">Pasta</label>
+                            <label for="folder_conteudo" i18n:translate="">Pasta de destino</label>
                             <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
                             <div class="formHelp" i18n:translate="">
                                 Nome da pasta utilizada para a migração.
@@ -126,7 +126,7 @@
                             <input type="file" id="fileXML" name="fileXML"/>
                         </div>
                         <div style="clear: both;"></div>
-                        <input type="submit" name="form.action.parseXML" value="Parse XML" />
+                        <input type="submit" name="form.action.parseXML" value="Executar migração" />
                     </div>
                 </fieldset>
                 <!--<fieldset>
