@@ -33,8 +33,9 @@ class LxToolsView(BrowserView):
         if 'form.action.parseXML' in self.request.form:
             file_xml = self.request.get('fileXML', None)
             folder_conteudo = self.request.get('folderMediaWiki', None)
-            if self.validateParseXML(file_xml, folder_conteudo):
-                return self.parseXML(file_xml, folder_conteudo)
+            export_version = self.request.get('exportVersionXML', None)
+            if self.validateParseXML(file_xml, folder_conteudo, export_version):
+                return self.parseXML(file_xml, folder_conteudo, export_version)
 
 
     def validateReindexIndex(self, tipo_conteudo, index_conteudo):
@@ -90,7 +91,7 @@ class LxToolsView(BrowserView):
         return sorted(indexs, key=str.lower)
 
     @memoize
-    def validateParseXML(self, file_xml, folder_conteudo):
+    def validateParseXML(self, file_xml, folder_conteudo, export_version):
         """Validação do Parse XML.
         """
         context = aq_inner(self.context)
@@ -99,6 +100,8 @@ class LxToolsView(BrowserView):
             self.errors['file_xml'] = "O campo é obrigatório."
         if (folder_conteudo == '') or (folder_conteudo.strip() == ''):
             self.errors['folder_conteudo'] = "O campo é obrigatório."
+        if (export_version == ''):
+            self.errors['export_version'] = "O campo é obrigatório."
         # Check for errors
         if self.errors:
             utils.addPortalMessage("Corrija os erros.", type='error')
@@ -107,15 +110,15 @@ class LxToolsView(BrowserView):
             return True
         
     @memoize
-    def parseXML(self, file_xml, folder_conteudo):
+    def parseXML(self, file_xml, folder_conteudo, export_version):
         """Parse XML.
         https://github.com/zikzakmedia/python-mediawiki
         """
         context = aq_inner(self.context)
         utils = getToolByName(context, 'plone_utils')
 
-        NS = '{http://www.mediawiki.org/xml/export-0.3/}'
-        
+        NS = '{http://www.mediawiki.org/xml/export-' + export_version + '/}'
+
         conteudo = []
 
         with open(file_xml.name) as f:
