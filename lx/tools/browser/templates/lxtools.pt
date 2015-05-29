@@ -163,6 +163,43 @@
                         <input type="submit" name="form.action.parseXML" value="Executar migração" />
                     </div>
                 </fieldset>
+                <fieldset>
+                    <legend>CASTI</legend>
+                    <p>
+                        <a href="javascript:toggleDiv('CASTI');">Criar atividades</a>
+                    </p>
+                    <div id="CASTI" style="display: none;">
+                        <div tal:define="error errors/folder_catalogo | nothing;"
+                            tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="folder_catalogo" i18n:translate="">Caminho</label>
+                            <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
+                            <div class="formHelp" i18n:translate="">
+                                Informe a pasta onde o catálogo será gerado. Ex.: /plonesite/pasta
+                            </div>
+                            <div tal:condition="error" tal:content="error" />
+                            <input type="text" name="folderCatalogo" size="40">
+                        </div>
+                        <div style="clear: both;"></div>
+                        <div tal:define="error errors/tipo_servico | nothing;"
+                            tal:attributes="class python:'field error' if error else 'field'">
+                            <label for="tipo_servico" i18n:translate="">Tipo Serviço</label>
+                            <span class="fieldRequired" i18n:translate="">(Obrigatório)</span>
+                            <div class="formHelp" i18n:translate="">
+                                Selecione o tipo de serviço.
+                            </div>
+                            <div tal:condition="error" tal:content="error" />
+                            <select id="tipoServico" name="tipoServico">
+                                <option value="">---</option>
+                                <option value="1">Infraestrutura</option>
+                                <option value="2">Apoio ao Controle</option>
+                                <option value="3">Sustentação</option>
+                                <option value="4">Apoio ao Planejamento</option>
+                            </select>
+                        </div>
+                        <div style="clear: both;"></div>
+                        <input type="submit" name="form.action.tipoServico" value="Criar atividades" />
+                    </div>
+                </fieldset>
                 <!--<fieldset>
                     <legend>Setting 04</legend>
                     <p>
