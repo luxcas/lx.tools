@@ -254,6 +254,7 @@ class LxToolsView(BrowserView):
         if not hasattr(folderCASTI, id_processo):
             folderCASTI.invokeFactory('Folder', id=id_processo, title=nome_servico)
             folderProcesso = getattr(folderCASTI, id_processo)
+            folderProcesso.setLayout('lista-atividade')
             publish(folderProcesso, 'publish')
         else:
             folderProcesso = getattr(folderCASTI, id_processo)
@@ -265,6 +266,7 @@ class LxToolsView(BrowserView):
             if not hasattr(folderProcesso, id_subprocesso):
                 folderProcesso.invokeFactory('Folder', id=id_subprocesso, title=title_subprocesso)
                 folderSubProcesso = getattr(folderProcesso, id_subprocesso)
+                folderSubProcesso.setLayout('lista-atividade')
                 publish(folderSubProcesso, 'publish')
 
             for atividade in item.listAtividade:
