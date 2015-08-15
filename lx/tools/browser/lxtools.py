@@ -11,7 +11,7 @@ import logging
 from zope.site.hooks import getSite
 from zope.component import queryUtility
 from plone.i18n.normalizer.interfaces import IIDNormalizer
-from xml.etree.ElementTree import iterparseICatalogoServicoPrefsForm
+
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 #Libs python
@@ -35,12 +35,6 @@ class LxToolsView(BrowserView):
             index_conteudo = self.request.get('index.conteudo', None)
             if self.validateReindexIndex(tipo_conteudo, index_conteudo):
                 return self.reindexIndexObject(tipo_conteudo, index_conteudo)
-        if 'form.action.parseXML' in self.request.form:
-            file_xml = self.request.get('fileXML', None)
-            folder_conteudo = self.request.get('folderMediaWiki', None)
-            export_version = self.request.get('exportVersionXML', None)
-            if self.validateParseXML(file_xml, folder_conteudo, export_version):
-                return self.parseXML(file_xml, folder_conteudo, export_version)
 
 
     def validateReindexIndex(self, tipo_conteudo, index_conteudo):
@@ -94,101 +88,3 @@ class LxToolsView(BrowserView):
         indexs = ctool.getIndexObjects()
         indexs = [i.getId() for i in indexs]
         return sorted(indexs, key=str.lower)
-
-    @memoize
-    def validateParseXML(self, file_xml, folder_conteudo, export_version):
-        """Validação do Parse XML.
-        """
-        context = aq_inner(self.context)
-        utils = getToolByName(context, 'plone_utils')
-        if file_xml.filename == '':
-            self.errors['file_xml'] = "O campo é obrigatório."
-        if (folder_conteudo == '') or (folder_conteudo.strip() == ''):
-            self.errors['folder_conteudo'] = "O campo é obrigatório."
-        if (export_version == ''):
-            self.errors['export_version'] = "O campo é obrigatório."
-        # Check for errors
-        if self.errors:
-            utils.addPortalMessage("Corrija os erros.", type='error')
-            return False
-        else:
-            return True
-
-    @memoize
-    def parseXML(self, file_xml, folder_conteudo, export_version):
-        """Parse XML.
-        https://github.com/zikzakmedia/python-mediawiki
-        """
-        context = aq_inner(self.context)
-        utils = getToolByName(context, 'plone_utils')
-
-        NS = '{http://www.mediawiki.org/xml/export-' + export_version + '/}'
-
-        conteudo = []
-
-        with open(file_xml.name) as f:
-            for event, elem in iterparse(f):
-                if elem.tag == '{0}page'.format(NS):
-                    title = elem.find("{0}title".format(NS))
-                    contr = elem.find(".//{0}username".format(NS))
-                    text = elem.find(".//{0}text".format(NS))
-                    if (title is not None) and (contr is not None) and (text is not None):
-                        text = unicode(text.text).encode('utf-8')
-                        text = wiki2html(text, True)
-                        conteudo.append(dict(title=title.text, contr=contr.text, text=text))
-                    elem.clear()
-
-        self.createDocument(conteudo, folder_conteudo)
-
-        msg = 'Procedimento executado.'
-        utils.addPortalMessage(msg, type='info')
-
-    def createDocument(self, conteudo, folder_conteudo):
-        """
-        """
-        log = logging.getLogger('createDocument:')
-
-        site = getSite()
-        id_folder = queryUtility(IIDNormalizer).normalize(folder_conteudo)
-
-        if not hasattr(site, id_folder):
-            site.invokeFactory('Folder', id=id_folder, title=folder_conteudo)
-
-        folderMediaWiki = getattr(site, id_folder)
-        for i in conteudo:
-            id = queryUtility(IIDNormalizer).normalize(i['title'])
-            if not hasattr(folderMediaWiki, id):
-                folderMediaWiki.invokeFactory('Document', id=id, title=i['title'])
-                page = getattr(folderMediaWiki, id)
-                page.setText(i['text'], mimetype='text/html')
-                log.info(id)
-
-    @memoize
-    def validateTipoServico(self, tipo_servico, folder_catalogo):
-        """Validação do tipo de serviço.
-        """
-        context = aq_inner(self.context)
-        utils = getToolByName(context, 'plone_utils')
-        ctool = getToolByName(context, 'portal_catalog')
-        if (tipo_servico == ''):
-            self.errors['tipo_servico'] = "O campo é obrigatório."
-        if (folder_catalogo == ''):
-            self.errors['folder_catalogo'] = "O campo é obrigatório."
-        else:
-            path = folder_catalogo.split('/')
-            if path[-1] == '':
-                id_folder = path[:-1][-1]
-                path = '/'.join(path[:-2])
-            else:
-                id_folder = path[-1]
-                path = '/'.join(path[:-1])
-            folders = ctool(portal_type='Folder', id=id_folder, path={"query": path, "depth": 1})
-            if not folders:
-                self.errors['folder_catalogo'] = "Caminho não localizado. Favor informar uma caminho válido."
-        # Check for errors
-        if self.errors:
-            utils.addPortalMessage("Corrija os erros.", type='error')
-            return False
-        else:
-            return True
-
