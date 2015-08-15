@@ -15,7 +15,6 @@ from plone.i18n.normalizer.interfaces import IIDNormalizer
 from zope.component import getUtility
 from plone.registry.interfaces import IRegistry
 #Libs python
-from suds.client import Client
 from lx.tools import toolsMessageFactory as _
 
 
